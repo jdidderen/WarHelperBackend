@@ -173,8 +173,10 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'http://localhost:8000',
-    get_env_value('DJANGO_ALLOWED_HOST_URL'),
-    get_env_value('DJANGO_ALLOWED_HOST_VUEJS'),
+    'http://warhammer.jdi.me',
+    'http://www.warhammer.jdi.me',
+    'http://warhammer-backend.jdi.me',
+    'http://www.warhammer-backend.jdi.me',
 )
 
 CORS_ALLOW_HEADERS = default_headers + (
