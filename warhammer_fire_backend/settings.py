@@ -85,7 +85,7 @@ def get_env_value(env_variable):
         raise ImproperlyConfigured(error_msg)
 
 ALLOWED_HOSTS = ['localhost',get_env_value('DJANGO_ALLOWED_HOST')]
-DEBUG = get_env_value('DJANGO_DEBUG')
+DEBUG = False
 SECRET_KEY = get_env_value('DJANGO_SECRET_KEY')
 DATABASES = {
     'default': {
