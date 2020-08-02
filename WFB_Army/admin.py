@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import Army
+from import_export.admin import ImportExportModelAdmin
 
-# Register your models here.
-admin.site.register(Army)
+@admin.register(Army)
+class ArmyAdmin(ImportExportModelAdmin):
+    pass

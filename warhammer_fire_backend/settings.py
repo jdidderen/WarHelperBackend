@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'allauth',
     'rest_auth',
     'rest_auth.registration',
+    'import_export',
     'WFB_Unit.apps.WfbUnitConfig',
     'WFB_Army.apps.WfbArmyConfig',
     'WFB_Stratagem.apps.WfbStratagemConfig',

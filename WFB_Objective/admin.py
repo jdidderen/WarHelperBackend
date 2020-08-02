@@ -1,5 +1,11 @@
 from django.contrib import admin
 from .models import Objective,ObjectiveType
-# Register your models here.
-admin.site.register(Objective)
-admin.site.register(ObjectiveType)
+from import_export.admin import ImportExportModelAdmin
+
+@admin.register(Objective)
+class ObjectiveAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(ObjectiveType)
+class ObjectiveTypeAdmin(ImportExportModelAdmin):
+    pass

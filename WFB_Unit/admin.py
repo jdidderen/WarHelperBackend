@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models import Unit,UnitType
+from import_export.admin import ImportExportModelAdmin
 
-# Register your models here.
-admin.site.register(Unit)
-admin.site.register(UnitType)
+@admin.register(Unit)
+class UnitAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(UnitType)
+class UnitTypeAdmin(ImportExportModelAdmin):
+    pass
