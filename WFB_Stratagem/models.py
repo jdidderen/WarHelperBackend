@@ -12,7 +12,7 @@ class StratagemPhase(models.Model):
 class Stratagem(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
-    cost = models.IntegerField()
+    cost = models.CharField(max_length=10)
     type = models.CharField(max_length=64)
     phase_id = models.ForeignKey(StratagemPhase,on_delete=models.SET_NULL,null=True,related_name='stratagem_ids')
     army_id = models.ForeignKey(Army,on_delete=models.SET_NULL,null=True,related_name='stratagem_ids')
