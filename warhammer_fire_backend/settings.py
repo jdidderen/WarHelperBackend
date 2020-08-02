@@ -171,7 +171,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'http://localhost:8000',
-    get_env_value('DJANGO_ALLOWED_HOST'),
+    get_env_value('DJANGO_ALLOWED_HOST_URL'),
     get_env_value('DJANGO_ALLOWED_HOST_VUEJS'),
 )
 
