@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.utils import model_meta
 from .models import Match,MatchLine
 from WFB_Objective.serializer import ObjectiveSerializer
 from WFB_Scenario.serializer import ScenarioSerializer
@@ -17,7 +18,18 @@ class MatchLineSerializer(serializers.ModelSerializer):
 
 
 class MatchSerializer(serializers.ModelSerializer):
-    line_ids = MatchLineSerializer(many=True)
+    line_ids = MatchLineSerializer(many=True,required=False)
+    army1 = serializers.SerializerMethodField('get_army1',read_only=True)
+    army2 = serializers.SerializerMethodField('get_army2',read_only=True)
+    player1 = serializers.SerializerMethodField('get_player1',read_only=True)
+    player2 = serializers.SerializerMethodField('get_player2',read_only=True)
+    scenario = serializers.SerializerMethodField('get_scenario',read_only=True)
+    objective1_p1 = serializers.SerializerMethodField('get_objective1_p1',read_only=True)
+    objective2_p1 = serializers.SerializerMethodField('get_objective2_p1',read_only=True)
+    objective3_p1 = serializers.SerializerMethodField('get_objective3_p1',read_only=True)
+    objective1_p2 = serializers.SerializerMethodField('get_objective1_p2',read_only=True)
+    objective2_p2 = serializers.SerializerMethodField('get_objective2_p2',read_only=True)
+    objective3_p2 = serializers.SerializerMethodField('get_objective3_p2',read_only=True)
 
     class Meta:
         model = Match
@@ -27,8 +39,10 @@ class MatchSerializer(serializers.ModelSerializer):
             'cp_p2_used_before_battle', 'date', 'location', 'score_no_details',
             'score_p1', 'score_p2', 'objective1_p1_id', 'objective2_p1_id',
             'objective3_p1_id', 'objective1_p2_id', 'objective2_p2_id', 'objective3_p2_id',
-            'line_ids'
+            'line_ids','army1','army2','player1','player2','scenario',
+            'objective1_p1','objective2_p1','objective3_p1','objective1_p2','objective2_p2','objective3_p2'
         )
+        extra_kwargs = {'score_no_details': {'required': False}}
 
     def create(self, data):
         line_datas = None
@@ -65,21 +79,6 @@ class MatchSerializer(serializers.ModelSerializer):
                 line = MatchLine.objects.get(id=line_data['id'])
                 line = self._update(line, line_data)
         return match
-
-
-class MatchDetailSerializer(serializers.ModelSerializer):
-    line_ids = MatchLineSerializer(many=True)
-    army1 = serializers.SerializerMethodField('get_army1')
-    army2 = serializers.SerializerMethodField('get_army2')
-    player1 = serializers.SerializerMethodField('get_player1')
-    player2 = serializers.SerializerMethodField('get_player2')
-    scenario = serializers.SerializerMethodField('get_scenario')
-    objective1_p1 = serializers.SerializerMethodField('get_objective1_p1')
-    objective2_p1 = serializers.SerializerMethodField('get_objective2_p1')
-    objective3_p1 = serializers.SerializerMethodField('get_objective3_p1')
-    objective1_p2 = serializers.SerializerMethodField('get_objective1_p2')
-    objective2_p2 = serializers.SerializerMethodField('get_objective2_p2')
-    objective3_p2 = serializers.SerializerMethodField('get_objective3_p2')
 
     def get_army1(self, obj):
         if obj.army_p1_id:
@@ -146,13 +145,4 @@ class MatchDetailSerializer(serializers.ModelSerializer):
             return obj.objective3_p2_id.name
         else:
             return ''
-
-    class Meta:
-        model = Match
-        fields = (
-            'id','cp_p1', 'cp_p2', 'cp_p1_used_before_battle','scenario',
-            'cp_p2_used_before_battle', 'date', 'location', 'score_no_details',
-            'score_p1', 'score_p2','line_ids','army1','army2','player1','player2','scenario',
-            'objective1_p1','objective2_p1','objective3_p1','objective1_p2','objective2_p2','objective3_p2'
-        )
 

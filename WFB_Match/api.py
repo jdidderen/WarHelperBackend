@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Match
-from .serializer import MatchSerializer,MatchDetailSerializer
+from .serializer import MatchSerializer
 
 
 @api_view(['GET'])
@@ -14,7 +14,7 @@ from .serializer import MatchSerializer,MatchDetailSerializer
 @authentication_classes([TokenAuthentication])
 def matchList(request):
     armies = Match.objects.all()
-    serializer = MatchDetailSerializer(armies, many=True,context={'request': request})
+    serializer = MatchSerializer(armies, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
@@ -23,7 +23,7 @@ def matchList(request):
 def matchListLastFive(request):
     print(request)
     armies = Match.objects.order_by('date')[:5]
-    serializer = MatchDetailSerializer(armies, many=True,context={'request': request})
+    serializer = MatchSerializer(armies, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
@@ -31,7 +31,7 @@ def matchListLastFive(request):
 def matchDetail(request, id):
     try:
         match = Match.objects.get(id=id)
-        serializer = MatchDetailSerializer(match,context={'request': request})
+        serializer = MatchSerializer(match,context={'request': request})
         return JsonResponse(serializer.data)
     except Match.DoesNotExist:
         return JsonResponse({'message': 'The match does not exist'}, status=status.HTTP_404_NOT_FOUND)
@@ -42,17 +42,21 @@ def matchDetail(request, id):
 def matchUpdate(request,id):
     match = Match.objects.get(id=id)
     matchData = JSONParser().parse(request)
+    if 'score_no_details' in matchData and not matchData['score_no_details']:
+        matchData['score_no_details'] = False
     serializer = MatchSerializer(match, data=matchData,context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data)
+    print(serializer.errors)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def matchCreate(request):
     matchData = JSONParser().parse(request)
-    print(matchData)
+    if 'score_no_details' in matchData and not matchData['score_no_details']:
+        matchData['score_no_details'] = False
     serializer = MatchSerializer(data=matchData,context={'request': request})
     if serializer.is_valid():
         serializer.save()
