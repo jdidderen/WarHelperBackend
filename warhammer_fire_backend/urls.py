@@ -8,7 +8,6 @@ urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('admin:index'))),
     path('admin/', admin.site.urls),
     path('api/army/', include('WFB_Army.urls')),
-    path('api/unit/', include('WFB_Unit.urls')),
     path('api/stratagem/', include('WFB_Stratagem.urls')),
     path('api/match/', include('WFB_Match.urls')),
     path('api/user/', include('WFB_User.urls')),

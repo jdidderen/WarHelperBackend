@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_auth.registration',
     'import_export',
-    'WFB_Unit.apps.WfbUnitConfig',
     'WFB_Army.apps.WfbArmyConfig',
     'WFB_Stratagem.apps.WfbStratagemConfig',
     'WFB_Match.apps.WfbMatchConfig',
