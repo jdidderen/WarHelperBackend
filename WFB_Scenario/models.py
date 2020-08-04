@@ -11,7 +11,7 @@ class ScenarioType(models.Model):
 # Create your models here.
 class Scenario(models.Model):
     name = models.CharField(max_length=64)
-    type_id = models.ForeignKey(ScenarioType,on_delete=models.SET_NULL,null=True,related_name='scenario_ids')
+    type_id = models.ForeignKey(ScenarioType,on_delete=models.SET_NULL,null=True,related_name='scenario_ids',db_column="type_id")
     rules = models.ImageField(blank=True, null=True)
     deployment = models.ImageField(null=True,default=True)
 

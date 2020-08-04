@@ -10,7 +10,7 @@ class ObjectiveType(models.Model):
 # Create your models here.
 class Objective(models.Model):
     name = models.CharField(max_length=64)
-    type_id = models.ForeignKey(ObjectiveType,on_delete=models.SET_NULL,null=True,related_name='scenario_ids')
+    type_id = models.ForeignKey(ObjectiveType,on_delete=models.SET_NULL,null=True,related_name='scenario_ids',db_column="type_id")
     description = models.ImageField(blank=True, null=True)
 
     def __str__(self):

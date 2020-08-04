@@ -14,8 +14,8 @@ class Stratagem(models.Model):
     description = models.TextField()
     cost = models.CharField(max_length=10)
     type = models.CharField(max_length=64)
-    phase_id = models.ForeignKey(StratagemPhase,on_delete=models.SET_NULL,null=True,related_name='stratagem_ids')
-    army_id = models.ForeignKey(Army,on_delete=models.SET_NULL,null=True,related_name='stratagem_ids')
+    phase_id = models.ForeignKey(StratagemPhase,on_delete=models.SET_NULL,null=True,related_name='stratagem_ids',db_column="phase_id")
+    army_id = models.ForeignKey(Army,on_delete=models.SET_NULL,null=True,related_name='stratagem_ids',db_column="army_id")
 
     def __str__(self):
         return '%s' % self.name
