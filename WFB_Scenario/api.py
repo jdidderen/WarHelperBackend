@@ -11,8 +11,8 @@ from .serializer import ScenarioSerializer
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def scenarioList(request):
-    armies = Scenario.objects.all()
-    serializer = ScenarioSerializer(armies, many=True,context={'request': request})
+    scenarios = Scenario.objects.all()
+    serializer = ScenarioSerializer(scenarios, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])

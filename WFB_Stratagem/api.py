@@ -11,15 +11,15 @@ from .serializer import StratagemSerializer,StratagemPhaseSerializer
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def stratagemList(request):
-    armies = Stratagem.objects.all()
-    serializer = StratagemSerializer(armies, many=True,context={'request': request})
+    stratagems = Stratagem.objects.all()
+    serializer = StratagemSerializer(stratagems, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def stratagemPhaseList(request):
-    armies = StratagemPhase.objects.all()
-    serializer = StratagemPhaseSerializer(armies, many=True,context={'request': request})
+    stratagems = StratagemPhase.objects.all()
+    serializer = StratagemPhaseSerializer(stratagems, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])

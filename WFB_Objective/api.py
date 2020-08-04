@@ -11,8 +11,8 @@ from .serializer import ObjectiveSerializer
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def objectiveList(request):
-    armies = Objective.objects.all()
-    serializer = ObjectiveSerializer(armies, many=True,context={'request': request})
+    objectives = Objective.objects.all()
+    serializer = ObjectiveSerializer(objectives, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
