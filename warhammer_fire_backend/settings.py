@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'WFB_Objective.apps.WfbObjectiveConfig',
     'WFB_Scenario.apps.WfbScenarioConfig',
     'WFB_PersonalObjectives.apps.WfbPersonalobjectivesConfig',
-    'WFB_MatchRequest.apps.WfbMatchrequestConfig',
+    'WFB_ArmyList.apps.WfbArmylistConfig',
 ]
 
 MIDDLEWARE = [
