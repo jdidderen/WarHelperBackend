@@ -13,7 +13,6 @@ urlpatterns = [
     path('api/user/', include('WFB_User.urls')),
     path('api/scenario/', include('WFB_Scenario.urls')),
     path('api/objective/', include('WFB_Objective.urls')),
-    path('api/match-request/', include('WFB_MatchRequest.urls')),
     path('api/personal-objective/', include('WFB_PersonalObjectives.urls')),
     path('api/army-list/', include('WFB_ArmyList.urls')),
     path('rest-auth/', include('rest_auth.urls')),
