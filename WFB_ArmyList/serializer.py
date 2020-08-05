@@ -9,7 +9,7 @@ class ArmyListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ArmyList
-        fields = ('id','name','shortDescription','description',
+        fields = ('id','name','description',
                   'player_id','army_id','army','player','descriptionHTML','type')
 
     def get_player(self, obj):
