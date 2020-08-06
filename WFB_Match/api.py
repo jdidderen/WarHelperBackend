@@ -25,6 +25,16 @@ def matchListLastFive(request):
     serializer = MatchSerializer(matches, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+def matchDetail(request, id):
+    try:
+        match = Match.objects.get(id=id)
+        serializer = MatchSerializer(match,context={'request': request})
+        return JsonResponse(serializer.data)
+    except Match.DoesNotExist:
+        return JsonResponse({'message': 'The match does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
