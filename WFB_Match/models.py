@@ -1,8 +1,10 @@
 from django.db import models
+from django.utils import timezone
 from django.conf import settings
 from WFB_Army.models import Army
 from WFB_Objective.models import Objective
 from WFB_Scenario.models import Scenario
+from datetime import date
 
 # Create your models here.
 class Match(models.Model):
@@ -15,11 +17,11 @@ class Match(models.Model):
     cp_p2 = models.IntegerField(default=0)
     cp_p1_used_before_battle = models.IntegerField(default=0)
     cp_p2_used_before_battle = models.IntegerField(default=0)
-    date = models.DateField(blank=True,null=True)
+    date = models.DateField(default=timezone.now)
     location = models.CharField(max_length=64,blank=True,null=True)
     score_no_details = models.BooleanField()
-    score_p1 = models.IntegerField(blank=True,null=True)
-    score_p2 = models.IntegerField(blank=True,null=True)
+    score_p1 = models.IntegerField(default=0)
+    score_p2 = models.IntegerField(default=0)
 
     objective1_p1_id = models.ForeignKey(Objective,on_delete=models.SET_NULL, null=True,related_name='game_objective1_p1_ids',db_column="objective1_p1_id")
     objective2_p1_id = models.ForeignKey(Objective,on_delete=models.SET_NULL, null=True,related_name='game_objective2_p1_ids',db_column="objective2_p1_id")
