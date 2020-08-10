@@ -8,11 +8,11 @@ from datetime import date
 
 # Create your models here.
 class Match(models.Model):
-    player1_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,related_name='game_p1_ids',db_column="player1_id")
+    player1_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,blank=True,null=True,related_name='game_p1_ids',db_column="player1_id")
     player2_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True,related_name='game_p2_ids',db_column="player2_id")
-    army_p1_id = models.ForeignKey(Army, on_delete=models.SET_NULL, null=True,related_name='game_p1_ids',db_column="army_p1_id")
-    army_p2_id = models.ForeignKey(Army, on_delete=models.SET_NULL, null=True,related_name='game_p2_ids',db_column="army_p2_id")
-    scenario_id = models.ForeignKey(Scenario,on_delete=models.SET_NULL, null=True, related_name='game_ids',db_column="scenario_id")
+    army_p1_id = models.ForeignKey(Army, on_delete=models.SET_NULL,blank=True, null=True,related_name='game_p1_ids',db_column="army_p1_id")
+    army_p2_id = models.ForeignKey(Army, on_delete=models.SET_NULL,blank=True, null=True,related_name='game_p2_ids',db_column="army_p2_id")
+    scenario_id = models.ForeignKey(Scenario,on_delete=models.SET_NULL,blank=True, null=True, related_name='game_ids',db_column="scenario_id")
     cp_p1 = models.IntegerField(default=0)
     cp_p2 = models.IntegerField(default=0)
     cp_p1_used_before_battle = models.IntegerField(default=0)
@@ -39,13 +39,13 @@ class Match(models.Model):
 class MatchLine(models.Model):
 
     match_id = models.ForeignKey(Match, on_delete=models.CASCADE, null=True,blank=True, related_name='line_ids',db_column="match_id")
-    player = models.IntegerField()
-    primary_score = models.IntegerField()
-    secondary1_score = models.IntegerField()
-    secondary2_score = models.IntegerField()
-    secondary3_score = models.IntegerField()
-    other_score = models.IntegerField()
-    cp_used = models.IntegerField()
+    player = models.IntegerField(default=1)
+    primary_score = models.IntegerField(default=0)
+    secondary1_score = models.IntegerField(default=0)
+    secondary2_score = models.IntegerField(default=0)
+    secondary3_score = models.IntegerField(default=0)
+    other_score = models.IntegerField(default=0)
+    cp_used = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s' % self.id

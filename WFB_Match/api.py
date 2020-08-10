@@ -7,7 +7,8 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated
 from .models import Match
 from .serializer import MatchSerializer
-
+from django.db.models import Q
+from datetime import datetime, timedelta
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -20,10 +21,20 @@ def matchList(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @authentication_classes([TokenAuthentication])
+def myMatchList(request,user_id):
+    last_6_month = datetime.today() - timedelta(days=180)
+    matches = Match.objects.filter(Q(date__gte=last_6_month) & (Q(player1_id__exact=user_id) | Q(player2_id__exact=user_id)))
+    serializer = MatchSerializer(matches, many=True,context={'request': request})
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
 def matchListLastFive(request):
     matches = Match.objects.order_by('date')[:5]
     serializer = MatchSerializer(matches, many=True,context={'request': request})
     return JsonResponse(serializer.data, safe=False)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -46,8 +57,7 @@ def matchUpdate(request,id):
     serializer = MatchSerializer(match, data=matchData,context={'request': request})
     if serializer.is_valid():
         serializer.save()
-        return JsonResponse(serializer.data)
-    print(serializer.errors)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
