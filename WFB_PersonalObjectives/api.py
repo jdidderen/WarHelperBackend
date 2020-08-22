@@ -41,12 +41,10 @@ def personalObjectiveUpdate(request,id):
 @permission_classes([IsAuthenticated])
 def personalObjectiveCreate(request):
     personalObjectiveData = JSONParser().parse(request)
-    print(personalObjectiveData)
     serializer = PersonalObjectiveSerializer(data=personalObjectiveData,context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])

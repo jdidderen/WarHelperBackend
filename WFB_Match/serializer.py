@@ -6,7 +6,6 @@ from WFB_Scenario.serializer import ScenarioSerializer
 
 
 class MatchLineSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
 
     class Meta:
         model = MatchLine
@@ -54,31 +53,31 @@ class MatchSerializer(serializers.ModelSerializer):
                 MatchLine.objects.create(**line_data, bok=new_match)
         return new_match
 
-    def _update(self, instance, validated_data):
-        # drf default implementation
-        info = model_meta.get_field_info(instance)
-
-        for attr, value in validated_data.items():
-            if attr in info.relations and info.relations[attr].to_many:
-                field = getattr(instance, attr)
-                field.set(value)
-            else:
-                setattr(instance, attr, value)
-        instance.save()
-        return instance
-
-    def update(self, match, data):
-        print(data)
-        line_datas = None
-        if 'line_ids' in data:
-            line_datas = data.pop('line_ids')
-        match = self._update(match, data)
-        if line_datas:
-            for line_data in line_datas:
-                print(line_data)
-                line = MatchLine.objects.get(id=line_data['id'])
-                line = self._update(line, line_data)
-        return match
+    # def _update(self, instance, validated_data):
+    #     # drf default implementation
+    #     info = model_meta.get_field_info(instance)
+    #
+    #     for attr, value in validated_data.items():
+    #         if attr in info.relations and info.relations[attr].to_many:
+    #             field = getattr(instance, attr)
+    #             field.set(value)
+    #         else:
+    #             setattr(instance, attr, value)
+    #     instance.save()
+    #     return instance
+    #
+    # def update(self, match, data):
+    #     print(data)
+    #     line_datas = None
+    #     if 'line_ids' in data:
+    #         line_datas = data.pop('line_ids')
+    #     match = self._update(match, data)
+    #     if line_datas:
+    #         for line_data in line_datas:
+    #             print(line_data)
+    #             line = MatchLine.objects.get(id=line_data['id'])
+    #             line = self._update(line, line_data)
+    #     return match
 
     def get_army1(self, obj):
         if obj.army_p1_id:
@@ -87,7 +86,7 @@ class MatchSerializer(serializers.ModelSerializer):
             return ''
 
     def get_army2(self, obj):
-        if obj.army_p1_id:
+        if obj.army_p2_id:
             return obj.army_p2_id.name
         else:
             return ''

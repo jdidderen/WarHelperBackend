@@ -41,12 +41,10 @@ def armyListUpdate(request,id):
 @permission_classes([IsAuthenticated])
 def armyListCreate(request):
     armyListData = JSONParser().parse(request)
-    print(armyListData)
     serializer = ArmyListSerializer(data=armyListData,context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])

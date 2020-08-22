@@ -5,8 +5,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Match
-from .serializer import MatchSerializer
+from .models import Match,MatchLine
+from .serializer import MatchSerializer,MatchLineSerializer
 from django.db.models import Q
 from datetime import datetime, timedelta
 
@@ -54,10 +54,30 @@ def matchUpdate(request,id):
     matchData = JSONParser().parse(request)
     if 'score_no_details' in matchData and not matchData['score_no_details']:
         matchData['score_no_details'] = False
+    line_datas = None
+    if 'line_ids' in matchData:
+        line_datas = matchData.pop('line_ids')
     serializer = MatchSerializer(match, data=matchData,context={'request': request})
     if serializer.is_valid():
         serializer.save()
+        if line_datas:
+            for line_data in line_datas:
+                line = MatchLine.objects.get(id=line_data['id'])
+                lineSerializer = MatchLineSerializer(line, data=line_data, context={'request': request})
+                if lineSerializer.is_valid():
+                    lineSerializer.save()
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def matchCreateLine(request):
+    matchLineData = JSONParser().parse(request)
+    serializer = MatchLineSerializer(data=matchLineData,context={'request': request})
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -70,7 +90,6 @@ def matchCreate(request):
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['DELETE'])
